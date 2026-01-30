@@ -1,26 +1,15 @@
-'use client';
+'use client'
 
-import { Button } from "@/components/ui/button"
-import { CardContent } from "@/components/ui/card"
-import { CardDescription } from "@/components/ui/card"
-import { CardTitle } from "@/components/ui/card"
-import { CardHeader } from "@/components/ui/card"
-import { Card } from "@/components/ui/card"
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { Button } from '@/components/ui/button'
+import { CardContent } from '@/components/ui/card'
+import { CardDescription } from '@/components/ui/card'
+import { CardTitle } from '@/components/ui/card'
+import { CardHeader } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-
-// Declare DEMO_DOCTOR and DEMO_PATIENTS variables
-const DEMO_DOCTOR = {
-  id: 'doctor1',
-  name: 'John Doe',
-  email: 'doctor@example.com',
-};
-
-const DEMO_PATIENTS = [
-  { id: 'patient1', name: 'Jane Smith', email: 'patient1@example.com' },
-  { id: 'patient2', name: 'Alice Johnson', email: 'patient2@example.com' },
-];
+import { DEMO_DOCTOR, DEMO_PATIENTS } from '@/lib/demo-data'
 
 export default function DemoLogin() {
   const router = useRouter()
@@ -29,19 +18,21 @@ export default function DemoLogin() {
   const handleDemoLogin = async (email: string, role: string) => {
     setIsLoading(true)
     try {
+      const userId = role === 'doctor' ? DEMO_DOCTOR.id : DEMO_PATIENTS.find((p) => p.email === email)?.id
+
       // Store demo session in localStorage
       localStorage.setItem(
         'demo_session',
         JSON.stringify({
           user: {
-            id: role === 'doctor' ? DEMO_DOCTOR.id : DEMO_PATIENTS.find((p) => p.email === email)?.id,
+            id: userId,
             email: email,
             user_metadata: {
-              first_name: role === 'doctor' ? 'Dr.' : 'Patient',
+              first_name: role === 'doctor' ? DEMO_DOCTOR.name : DEMO_PATIENTS.find((p) => p.email === email)?.name,
             },
           },
           profile: {
-            id: role === 'doctor' ? DEMO_DOCTOR.id : DEMO_PATIENTS.find((p) => p.email === email)?.id,
+            id: userId,
             role: role,
           },
         }),
