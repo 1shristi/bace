@@ -1,10 +1,26 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { DEMO_DOCTOR, DEMO_PATIENTS } from '@/lib/demo-data'
+import { Button } from "@/components/ui/button"
+import { CardContent } from "@/components/ui/card"
+import { CardDescription } from "@/components/ui/card"
+import { CardTitle } from "@/components/ui/card"
+import { CardHeader } from "@/components/ui/card"
+import { Card } from "@/components/ui/card"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import Link from 'next/link'
+
+// Declare DEMO_DOCTOR and DEMO_PATIENTS variables
+const DEMO_DOCTOR = {
+  id: 'doctor1',
+  name: 'John Doe',
+  email: 'doctor@example.com',
+};
+
+const DEMO_PATIENTS = [
+  { id: 'patient1', name: 'Jane Smith', email: 'patient1@example.com' },
+  { id: 'patient2', name: 'Alice Johnson', email: 'patient2@example.com' },
+];
 
 export default function DemoLogin() {
   const router = useRouter()
@@ -46,6 +62,15 @@ export default function DemoLogin() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-2xl">
+        {/* Back to Home Button */}
+        <div className="mb-8">
+          <Link href="/">
+            <Button variant="outline" className="bg-transparent">
+              ← Back to Home
+            </Button>
+          </Link>
+        </div>
+
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-2">BACE Tracker</h1>

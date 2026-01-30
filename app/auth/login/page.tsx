@@ -74,54 +74,65 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-2">
-          <CardTitle>Log In</CardTitle>
-          <CardDescription>Welcome back to BACE</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
-            {error && (
-              <div className="p-3 rounded bg-destructive/10 text-destructive text-sm">
-                {error}
-              </div>
-            )}
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Email</label>
-              <Input
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Password</label>
-              <Input
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-
-            <Button type="submit" disabled={loading} className="w-full">
-              {loading ? 'Logging in...' : 'Log In'}
+      <div className="w-full max-w-md">
+        {/* Back to Home Button */}
+        <div className="mb-8">
+          <Link href="/">
+            <Button variant="outline" className="bg-transparent">
+              ← Back to Home
             </Button>
-          </form>
+          </Link>
+        </div>
 
-          <p className="text-center text-sm text-muted-foreground mt-4">
-            Don't have an account?{' '}
-            <Link href="/auth/sign-up" className="text-primary hover:underline">
-              Sign up
-            </Link>
-          </p>
-        </CardContent>
-      </Card>
+        <Card>
+          <CardHeader className="space-y-2">
+            <CardTitle>Log In</CardTitle>
+            <CardDescription>Welcome back to BACE</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleLogin} className="space-y-4">
+              {error && (
+                <div className="p-3 rounded bg-destructive/10 text-destructive text-sm">
+                  {error}
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Email</label>
+                <Input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Password</label>
+                <Input
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+
+              <Button type="submit" disabled={loading} className="w-full">
+                {loading ? 'Logging in...' : 'Log In'}
+              </Button>
+            </form>
+
+            <p className="text-center text-sm text-muted-foreground mt-4">
+              Don't have an account?{' '}
+              <Link href="/auth/sign-up" className="text-primary hover:underline">
+                Sign up
+              </Link>
+            </p>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }
