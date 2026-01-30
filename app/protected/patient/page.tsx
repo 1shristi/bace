@@ -1,12 +1,14 @@
 'use client'
 
+import { Slider } from "@/components/ui/slider"
+
 import React from "react"
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Slider } from '@/components/ui/slider'
+import { Dial } from '@/components/dial'
 import { Textarea } from '@/components/ui/textarea'
 import { useRouter } from 'next/navigation'
 import { getDemoEntriesByUserId, addDemoEntry } from '@/lib/demo-data'
@@ -166,84 +168,51 @@ export default function PatientDashboard() {
             <CardDescription>Rate each area on a scale of 1-5</CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Behavior */}
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <label className="text-sm font-medium">Behavior</label>
-                  <span className="text-lg font-semibold text-primary">{scores.behavior}</span>
+            <form onSubmit={handleSubmit} className="space-y-8">
+              {/* Dials Grid */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                {/* Behavior Dial */}
+                <div>
+                  <Dial
+                    value={scores.behavior}
+                    onChange={(value) => setScores({ ...scores, behavior: value })}
+                    label="Behaviour"
+                    description="Overall conduct"
+                    color="hsl(var(--chart-1))"
+                  />
                 </div>
-                <Slider
-                  min={1}
-                  max={5}
-                  step={1}
-                  value={[scores.behavior]}
-                  onValueChange={(value) => setScores({ ...scores, behavior: value[0] })}
-                  className="w-full"
-                />
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>Poor</span>
-                  <span>Excellent</span>
-                </div>
-              </div>
 
-              {/* Activity */}
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <label className="text-sm font-medium">Activity</label>
-                  <span className="text-lg font-semibold text-primary">{scores.activity}</span>
+                {/* Activity Dial */}
+                <div>
+                  <Dial
+                    value={scores.activity}
+                    onChange={(value) => setScores({ ...scores, activity: value })}
+                    label="Activity"
+                    description="Physical engagement"
+                    color="hsl(var(--chart-2))"
+                  />
                 </div>
-                <Slider
-                  min={1}
-                  max={5}
-                  step={1}
-                  value={[scores.activity]}
-                  onValueChange={(value) => setScores({ ...scores, activity: value[0] })}
-                  className="w-full"
-                />
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>Very Low</span>
-                  <span>Very High</span>
-                </div>
-              </div>
 
-              {/* Cognition */}
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <label className="text-sm font-medium">Cognition</label>
-                  <span className="text-lg font-semibold text-primary">{scores.cognition}</span>
+                {/* Cognition Dial */}
+                <div>
+                  <Dial
+                    value={scores.cognition}
+                    onChange={(value) => setScores({ ...scores, cognition: value })}
+                    label="Mental Clarity"
+                    description="Focus & concentration"
+                    color="hsl(var(--chart-3))"
+                  />
                 </div>
-                <Slider
-                  min={1}
-                  max={5}
-                  step={1}
-                  value={[scores.cognition]}
-                  onValueChange={(value) => setScores({ ...scores, cognition: value[0] })}
-                  className="w-full"
-                />
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>Foggy</span>
-                  <span>Sharp</span>
-                </div>
-              </div>
 
-              {/* Emotion */}
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <label className="text-sm font-medium">Emotion</label>
-                  <span className="text-lg font-semibold text-primary">{scores.emotion}</span>
-                </div>
-                <Slider
-                  min={1}
-                  max={5}
-                  step={1}
-                  value={[scores.emotion]}
-                  onValueChange={(value) => setScores({ ...scores, emotion: value[0] })}
-                  className="w-full"
-                />
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>Distressed</span>
-                  <span>Content</span>
+                {/* Emotion Dial */}
+                <div>
+                  <Dial
+                    value={scores.emotion}
+                    onChange={(value) => setScores({ ...scores, emotion: value })}
+                    label="Emotional State"
+                    description="Mood & wellbeing"
+                    color="hsl(var(--chart-4))"
+                  />
                 </div>
               </div>
 
