@@ -2,7 +2,7 @@
 
 import React from "react"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
@@ -19,8 +19,15 @@ export default function SignUp() {
   const [role, setRole] = useState<Role>('patient')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [supabaseReady, setSupabaseReady] = useState(true)
   const router = useRouter()
-  const supabase = createClient()
+
+  useEffect(() => {
+    // Check if Supabase is configured
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      setSupabaseReady(false)
+    }
+  }, [])
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -28,6 +35,7 @@ export default function SignUp() {
     setError(null)
 
     try {
+      const supabase = createClient()
       const { error: signUpError } = await supabase.auth.signUp({
         email,
         password,
@@ -48,6 +56,30 @@ export default function SignUp() {
     } finally {
       setLoading(false)
     }
+  }
+
+  if (!supabaseReady) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background p-4">
+        <Card className="w-full max-w-md">
+          <CardHeader className="space-y-2">
+            <CardTitle>Setup Required</CardTitle>
+            <CardDescription>Supabase is not configured</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              To create an account, please add your Supabase credentials in the Vars section of the sidebar.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Need to explore first?{' '}
+              <Link href="/demo/login" className="text-primary hover:underline">
+                Try the demo
+              </Link>
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    )
   }
 
   return (
