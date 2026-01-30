@@ -8,6 +8,7 @@ export async function updateSession(request: NextRequest) {
 
   if (!supabaseUrl || !supabaseKey) {
     // Return request as-is if Supabase is not configured
+    // This allows demo mode to work via client-side localStorage
     return NextResponse.next({
       request,
     })
@@ -48,13 +49,23 @@ export async function updateSession(request: NextRequest) {
 
   if (
     // if the user is not logged in and the app path, in this case, /protected, is accessed, redirect to the login page
-    request.nextUrl.pathname.startsWith('/protected') &&
+    // EXCEPT /protected/patient and /protected/doctor which handle demo mode client-side
+    request.nextUrl.pathname === '/protected' &&
     !user
   ) {
-    // no user, potentially respond by redirecting the user to the login page
-    const url = request.nextUrl.clone()
-    url.pathname = '/auth/login'
-    return NextResponse.redirect(url)
+    // Allow /protected to load so client-side can check for demo session
+    // Only redirect if it's not the main protected route
+    return supabaseResponse
+  }
+
+  if (
+    // For specific patient/doctor routes, check auth
+    (request.nextUrl.pathname.startsWith('/protected/patient') ||
+      request.nextUrl.pathname.startsWith('/protected/doctor')) &&
+    !user
+  ) {
+    // no user, allow through - client will check for demo session
+    return supabaseResponse
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.
